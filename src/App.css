@@ -1,0 +1,487 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #fff7ed;
+  font-family: "Inter", sans-serif;
+  height: 100%;
+}
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout-main {
+  flex: 1;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+header {
+  height: 110px;
+  display: flex;
+  align-items: center;
+  padding-block: 10px;
+}
+
+header .site-logo {
+  color: black;
+  margin-right: auto;
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 25px;
+}
+
+header a {
+  text-decoration: none;
+  color: #4d4d4d;
+  font-weight: 600;
+  padding: 5px 20px;
+}
+
+header a:hover {
+  color: #161616;
+  text-decoration: underline;
+}
+.login-link {
+  display: inline-flex;
+  align-items: center;
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* optional, nice spacing */
+}
+
+footer {
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+footer > p {
+  margin: 15px;
+  font-size: small;
+}
+.link-button {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  padding: 0.75rem 1.375rem;
+  color: initial;
+  font-weight: 700;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+}
+
+.link-button:hover {
+  transform: translate(1px, 1px);
+}
+
+/*** HOME PAGE ***/
+.home-container {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.46), rgba(0, 0, 0, 0.46)),
+    url("./assets/images/home-hero.png") no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  min-height: 350px;
+  color: white;
+  padding: 45px 23px;
+}
+
+.home-container h1 {
+  font-weight: 700;
+  font-size: 2.25rem;
+  line-height: 42px;
+}
+
+.home-container p {
+  line-height: 24px;
+}
+
+.home-container a {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  background-color: #ff8c38;
+  border: none;
+  width: 100%;
+  margin-top: 27px;
+  padding-block: 0.75rem;
+  color: white;
+  font-weight: 700;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+}
+
+.home-container a:hover {
+  transform: translate(1px, 1px);
+}
+.img-crop {
+  width: 100%; /* or whatever width you want */
+  height: 40vh; /* just the desired visible portion, relative to viewport or container */
+  overflow: hidden; /* hide top/bottom */
+}
+
+/*** ABOUT PAGE ***/
+.about-hero-image {
+  width: 100%;
+  height: 100%; /* fill the container */
+  object-fit: cover; /* scale to cover container */
+  object-position: center center; /* always center image vertically and horizontally */
+}
+
+.about-page-content {
+  padding-inline: 23px;
+  color: #161616;
+  margin-bottom: 55px;
+}
+
+.about-page-content h1 {
+  line-height: 38px;
+}
+
+.about-page-content p {
+  line-height: 22px;
+}
+
+.about-page-cta {
+  background-color: #ffcc8d;
+  color: #161616;
+  padding-inline: 32px;
+  padding-bottom: 32px;
+  margin-inline: 27px;
+  border-radius: 5px;
+}
+
+.about-page-cta h2 {
+  margin: 0;
+  padding-block: 37px;
+}
+
+.about-page-cta .link-button {
+  background-color: #161616;
+  color: white;
+  border-radius: 10px;
+}
+.vans-header {
+  margin-left: 10px;
+}
+.vans-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.van-card {
+  background-color: #fff7ed;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  padding: 10px;
+
+  text-decoration: none; /* removes underline */
+  color: inherit; /* keeps text from turning blue */
+  /*display: block; /* allows Link to wrap the whole card */
+}
+.van-details {
+  background-color: #fff7ed;
+  display: flex;
+  flex-direction: column;
+
+  padding: 10px;
+  width: 50%;
+  margin: 0 auto;
+}
+.badge {
+  border-radius: 3px;
+  margin-top: 5px;
+  padding: 3px;
+  width: fit-content;
+  color: white;
+  font-size: small;
+}
+.badge-simple {
+  background-color: #ff8c38;
+}
+.badge-rugged {
+  background-color: #115e59;
+}
+.badge-luxury {
+  background-color: #000;
+}
+.van-card-name {
+  font-size: large;
+  font-weight: bold;
+  margin: 15px auto;
+}
+.van-card-price {
+  font-weight: bold;
+}
+.van-card > p {
+  font-size: small;
+}
+
+.van-item-description {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: small;
+  margin-top: 5px;
+}
+.van-item-price > span {
+  font-weight: bold;
+}
+.van-item-price > div {
+  font-size: smaller;
+}
+.host-nav {
+  display: flex;
+}
+
+.host-nav a {
+  text-decoration: none;
+  color: #4d4d4d;
+  font-weight: 500;
+  padding: 5px 20px;
+}
+
+.host-nav a:hover {
+  color: #161616;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.host-van-section {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+.host-van-card {
+  height: 100px;
+  width: 80vh;
+  margin: 5px;
+  border-radius: 5px;
+  display: flex;
+  background-color: #fff;
+  text-decoration: none; /* removes underline */
+  color: inherit; /* keeps text from turning blue */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.host-van-card > img {
+  height: 100px;
+  width: 100px;
+  border-radius: 5px;
+}
+.host-van-card-data > h1 {
+  font-size: 1.3rem;
+  margin-left: 20px;
+}
+.host-van-card-data > p {
+  font-size: 0.8rem;
+  margin-left: 20px;
+}
+.host-van-card-data > div {
+  margin: 20px;
+}
+.host-van-details-container {
+  display: flex;
+  justify-content: center;
+}
+.host-van-details-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 40px;
+  background-color: #fff;
+  border-radius: 5px;
+  width: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.host-van-details {
+  width: 400px;
+  margin: 40px 0;
+  display: flex;
+}
+.host-van-details > img {
+  height: 200px;
+  width: 200px;
+  border-radius: 5px;
+}
+.back-button {
+  display: inline-block;
+  margin: 40px;
+  text-decoration: none;
+  color: inherit;
+}
+.van-details-info {
+  width: 90%;
+}
+.van-details-info > p {
+  font-size: small;
+}
+.van-details-photo {
+  display: flex;
+  align-items: flex-start;
+  width: 80%;
+}
+.van-details-photo > img {
+  width: 100px;
+  height: 100px;
+  border-radius: 5px;
+  margin: 40px 0;
+}
+.van-details-price {
+  display: flex;
+  align-items: flex-start;
+  width: 80%;
+}
+.vans-filter-container {
+  display: flex;
+  margin: 10px;
+  gap: 10px;
+}
+
+.van-type {
+  height: 34px;
+  padding: 6px 26px;
+  font-style: normal;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  background-color: #ffead0;
+  color: #4d4d4d;
+  transition: 200ms all cubic-bezier(0.4, 0, 0.2, 1);
+}
+.van-type:hover {
+  color: #ffead0;
+}
+
+.van-type:focus {
+  outline: none;
+}
+
+.van-type.selected {
+  color: #ffead0;
+}
+.van-type.simple:hover,
+.van-type.simple.selected {
+  background-color: #e17654;
+}
+
+.van-type.rugged:hover,
+.van-type.rugged.selected {
+  background-color: #115e59;
+}
+
+.van-type.luxury:hover,
+.van-type.luxury.selected {
+  background-color: #161616;
+}
+.van-type.clear-filters:hover {
+  background-color: #ddd;
+  color: #000;
+}
+
+i[class*="van-type-"] {
+  padding: 7px 14px;
+}
+.not-found-container {
+  display: flex;
+  justify-self: center;
+}
+.not-found-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: #eee;
+  width: 50vw;
+  height: 50vh;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.not-found-card > p {
+  padding: 10px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.not-found-card > a {
+  background-color: #000;
+  color: white;
+  text-decoration: none;
+
+  width: 300px;
+  height: 60px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-inline: 27px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  gap: 20px;
+}
+
+.login-form > input {
+  border: 1px solid rgba(209, 213, 219);
+  height: 40px;
+  text-indent: 10px;
+  font-family: "Inter", sans-serif;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  font-weight: 400;
+}
+
+.login-form > input:focus {
+  outline: none;
+}
+
+.login-form > input:first-of-type {
+  border-radius: 6px 6px 0px 0px;
+}
+
+.login-form > input:last-of-type {
+  border-radius: 0px 0px 6px 6px;
+  border-top: none;
+}
+
+.login-form > button {
+  background-color: #ff8c38;
+  border: none;
+  border-radius: 6px;
+  height: 55px;
+  margin-top: 22px;
+  color: white;
+  font-family: "Inter", sans-serif;
+}
