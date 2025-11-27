@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Badge from "../../components/Badge";
 import HostVansLayout from "../../components/HostVansLayout";
-import { fetchData } from "../../utils/api";
+import { getHostVan } from "../../utils/api";
 export default function HostVanDetails() {
   const [van, setVan] = useState();
   const [loading, setLoading] = useState(true);
@@ -12,9 +12,8 @@ export default function HostVanDetails() {
   useEffect(() => {
     async function fetchVan() {
       try {
-        const data = await fetchData(`/api/host/vans/${params.id}`);
-        console.log(data.vans);
-        setVan(data.vans[0]);
+        const van = await getHostVan(params.id);
+        setVan(van);
       } catch (err) {
         setError(`Error fetching vans: ${err}`);
       } finally {

@@ -1,7 +1,7 @@
 import { Link, useParams, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Badge from "../../components/Badge";
-import { fetchData } from "../../utils/api";
+import { getVan } from "../../utils/api";
 
 export default function VanDetails() {
   const params = useParams();
@@ -9,12 +9,12 @@ export default function VanDetails() {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const [error, setError] = useState("");
-  console.log(location);
+
   useEffect(() => {
     async function loadData() {
       try {
-        const data = await fetchData(`/api/vans/${params.id}`);
-        setVan(data.vans);
+        const van = await getVan(params.id); //(`/api/vans/${params.id}`);
+        setVan(van);
       } catch (err) {
         setError(`Error fetching vans: ${err}`);
       } finally {

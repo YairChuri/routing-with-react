@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { fetchData } from "../../utils/api";
+import { getHostVans } from "../../utils/api";
 export default function HostVans() {
   const [vans, setVans] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -8,9 +8,9 @@ export default function HostVans() {
   useEffect(() => {
     async function fetchVans() {
       try {
-        const data = await fetchData("/api/host/vans");
+        const vans = await getHostVans();
 
-        setVans(data.vans);
+        setVans(vans);
       } catch (err) {
         setError(`Error fetching vans: ${err}`);
       } finally {

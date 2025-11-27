@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Badge from "../../components/Badge";
-import { fetchData } from "../../utils/api";
+import { getVans } from "../../utils/api";
 
 export default function Vans() {
   const [vans, setVans] = useState([]);
@@ -13,8 +13,8 @@ export default function Vans() {
     async function loadData() {
       setLoading(true);
       try {
-        const data = await fetchData("/api/vans");
-        setVans(data.vans);
+        const vans = await getVans();
+        setVans(vans);
       } catch (err) {
         setError(`Error fetching vans: ${err}`);
       } finally {

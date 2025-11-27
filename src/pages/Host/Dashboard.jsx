@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { BsStarFill } from "react-icons/bs";
-import { getHostVans } from "../../utils/api";
+import { getVans } from "../../utils/api";
 
 export default function Dashboard() {
   const [vans, setVans] = React.useState([]);
@@ -9,7 +9,7 @@ export default function Dashboard() {
   const [error, setError] = React.useState(null);
   React.useEffect(() => {
     setLoading(true);
-    getHostVans()
+    getVans()
       .then((data) => setVans(data))
       .catch((err) => setError(err))
       .finally(() => setLoading(false));
