@@ -1,4 +1,3 @@
-import "../../App.css";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Badge from "../../components/Badge";
@@ -9,15 +8,15 @@ export default function VanDetails() {
   const [van, setVan] = useState([]);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
-
+  const [error, setError] = useState("");
   console.log(location);
   useEffect(() => {
     async function loadData() {
       try {
-        const data = fetchData(`/api/vans/${params.id}`);
+        const data = await fetchData(`/api/vans/${params.id}`);
         setVan(data.vans);
-      } catch (error) {
-        console.error("Error fetching vans", error);
+      } catch (err) {
+        setError(`Error fetching vans: ${err}`);
       } finally {
         setLoading(false);
       }
@@ -27,6 +26,14 @@ export default function VanDetails() {
   }, [params.id]);
 
   if (loading) return <p>Loading...</p>;
+  if (error) {
+    return (
+      <div style={{ padding: "20px", color: "red" }}>
+        <p>{error}</p>
+        <button onClick={() => window.location.reload()}>Retry</button>
+      </div>
+    );
+  }
 
   return (
     <>

@@ -2,25 +2,38 @@ import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Badge from "../../components/Badge";
 import HostVansLayout from "../../components/HostVansLayout";
+import { fetchData } from "../../utils/api";
 export default function HostVanDetails() {
   const [van, setVan] = useState();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const params = useParams();
 
   useEffect(() => {
     async function fetchVan() {
-      const req = await fetch(`/api/host/vans/${params.id}`);
-      const data = await req.json();
-      console.log(data.vans);
-      setVan(data.vans[0]);
-      setLoading(false);
+      try {
+        const data = await fetchData(`/api/host/vans/${params.id}`);
+        console.log(data.vans);
+        setVan(data.vans[0]);
+      } catch (err) {
+        setError(`Error fetching vans: ${err}`);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchVan();
   }, []);
 
   if (loading) return <p>Loading...</p>;
-
+  if (error) {
+    return (
+      <div style={{ padding: "20px", color: "red" }}>
+        <p>{error}</p>
+        <button onClick={() => window.location.reload()}>Retry</button>
+      </div>
+    );
+  }
   return (
     <>
       <Link to=".." relative="path" className="back-button">

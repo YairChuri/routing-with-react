@@ -1,24 +1,35 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { fetchData } from "../../utils/api";
 export default function HostVans() {
   const [vans, setVans] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [error, setError] = useState("");
   useEffect(() => {
     async function fetchVans() {
-      const req = await fetch("/api/host/vans");
-      const data = await req.json();
+      try {
+        const data = await fetchData("/api/host/vans");
 
-      setVans(data.vans);
-      setLoading(false);
+        setVans(data.vans);
+      } catch (err) {
+        setError(`Error fetching vans: ${err}`);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchVans();
   }, []);
-
-  return loading ? (
-    <p>Loading...</p>
-  ) : (
+  if (loading) return <p>Loading...</p>;
+  if (error) {
+    return (
+      <div style={{ padding: "20px", color: "red" }}>
+        <p>{error}</p>
+        <button onClick={() => window.location.reload()}>Retry</button>
+      </div>
+    );
+  }
+  return (
     <section className="host-van-section">
       <h1>Your listed vans</h1>
       {vans.map((van) => {

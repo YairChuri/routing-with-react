@@ -6,7 +6,7 @@ import { fetchData } from "../../utils/api";
 export default function Vans() {
   const [vans, setVans] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
@@ -16,8 +16,7 @@ export default function Vans() {
         const data = await fetchData("/api/vans");
         setVans(data.vans);
       } catch (err) {
-        console.log(err);
-        setError(err);
+        setError(`Error fetching vans: ${err}`);
       } finally {
         setLoading(false);
       }
@@ -25,16 +24,17 @@ export default function Vans() {
 
     loadData();
   }, []);
-  const typeFilter = searchParams.get("type");
   if (loading) return <p>Loading...</p>;
-  if (error)
+  if (error) {
     return (
-      <div>
-        <p>{error.status}</p>
-        <p>{error.message}</p>
-        <p>{error.statusText}</p>
+      <div style={{ padding: "20px", color: "red" }}>
+        <p>{error}</p>
+        <button onClick={() => window.location.reload()}>Retry</button>
       </div>
     );
+  }
+
+  const typeFilter = searchParams.get("type");
   const displayedVans = typeFilter
     ? vans.filter((van) => van.type.toLowerCase() == typeFilter)
     : vans;
