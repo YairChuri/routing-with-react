@@ -1,11 +1,14 @@
+import { useContext } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-export default function AuthRequired() {
-  const authenticated = localStorage.getItem("loggedin");
+import AuthContext from "../components/AuthContext";
+
+export default function AuthRequired({ requiredRole }) {
+  const { user, userData, loading } = useContext(AuthContext);
   const location = useLocation();
 
-  console.log(location.pathname);
+  if (loading) return <p>Loading...</p>;
 
-  if (!authenticated) {
+  if (!user) {
     return (
       <Navigate
         to="login"
@@ -15,5 +18,12 @@ export default function AuthRequired() {
     );
   }
 
+  if (requiredRole) {
+    if (!userData) return <p>Loading user data...</p>;
+
+    if (userData.role !== requiredRole) {
+      return <Navigate to="/" replace />;
+    }
+  }
   return <Outlet />;
 }

@@ -2,8 +2,9 @@ const usersSeed = [
   {
     id: "123",
     email: "yair.churi@gmail.com",
-    password: "p123",
+    password: "P@ssword123",
     name: "Yair",
+    roll: "admin",
   },
 ];
 

@@ -1,54 +1,60 @@
-import React from "react";
-import { loginUser } from "../utils/api";
-
-import { useNavigate, useLocation } from "react-router-dom";
+// src/pages/Login.jsx
+import React, { useContext, useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { Navigate, useLocation } from "react-router-dom";
+import { auth } from "../utils/api";
+import AuthContext from "../components/AuthContext";
 
 export default function Login() {
-  const [loginFormData, setLoginFormData] = React.useState({
+  const { user } = useContext(AuthContext); // get user from AuthContext
+  const location = useLocation();
+
+  const [loginFormData, setLoginFormData] = useState({
     email: "",
     password: "",
   });
-  const [status, setStatus] = React.useState("idle");
-  const [error, setError] = React.useState("");
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [status, setStatus] = useState("idle");
+  const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  // If the user is already logged in, redirect automatically
+  if (user) {
+    const backNav = location.state?.path || "/host";
+    return <Navigate to={backNav} replace />;
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log(loginFormData);
-    async function login() {
-      try {
-        setStatus("logging");
-        const req = await loginUser(loginFormData);
-        setError("");
-        localStorage.setItem("loggedin", true);
-        const backNav =
-          location.state?.path !== null ? location.state?.path : "/host";
-        navigate(backNav, { replace: true });
-      } catch (err) {
-        setError(`${err.statusText}. ${err.message}`);
-      } finally {
-        setStatus("idle");
-      }
+    setStatus("logging");
+    setError("");
+
+    try {
+      await signInWithEmailAndPassword(
+        auth,
+        loginFormData.email,
+        loginFormData.password
+      );
+      // No manual navigate() needed!
+      // AuthContext will update and trigger the redirect above
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setStatus("idle");
     }
-    login();
   }
 
   function handleChange(e) {
     const { name, value } = e.target;
-    setLoginFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setLoginFormData((prev) => ({ ...prev, [name]: value }));
   }
 
   return (
     <div className="login-container">
       {location.state?.message ? (
-        <h1>{location.state?.message}</h1>
+        <h1>{location.state.message}</h1>
       ) : (
         <h1>Sign in to your account</h1>
       )}
+
       <form onSubmit={handleSubmit} className="login-form">
         <input
           name="email"
@@ -64,12 +70,12 @@ export default function Login() {
           placeholder="Password"
           value={loginFormData.password}
         />
-        {status === "idle" ? (
-          <button>Log in</button>
-        ) : (
-          <button>Logging...</button>
-        )}
-        {error != "" ? <p style={{ color: "#ff0000" }}>{error}</p> : null}
+
+        <button disabled={status === "logging"}>
+          {status === "logging" ? "Logging in..." : "Log in"}
+        </button>
+
+        {error && <p style={{ color: "#ff0000" }}>{error}</p>}
       </form>
     </div>
   );

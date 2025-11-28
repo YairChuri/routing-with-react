@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import {
   getFirestore,
   collection,
@@ -7,7 +8,7 @@ import {
   getDoc,
   query,
   where,
-} from "firebase/firestore/lite";
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDHeg9bjsozrw2E3VXTD9RTTpCOCNmM7IQ",
@@ -19,10 +20,10 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+export const db = getFirestore(app);
+export const auth = getAuth(app);
 
 const vansCollectionRef = collection(db, "vans");
-
 export async function getVans() {
   const snapshot = await getDocs(vansCollectionRef);
 
@@ -66,51 +67,3 @@ export async function getHostVan(id) {
   console.log(van);
   return van;
 }
-export async function loginUser(creds) {}
-/*
-export async function fetchData(url) {
-  console.log(`fetching from ${url}`);
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw {
-      message: "Failed to fetch data",
-      statusText: res.statusText,
-      status: res.status,
-    };
-  }
-  const data = await res.json();
-
-  return data;
-}
-
-export async function loginUser(creds) {
-  const res = await fetch("/api/login", {
-    method: "post",
-    body: JSON.stringify(creds),
-  });
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw {
-      message: data.message,
-      statusText: res.statusText,
-      status: res.status,
-    };
-  }
-
-  return data;
-}
-export async function getHostVans(id) {
-  const url = id ? `/api/host/vans/${id}` : "/api/host/vans";
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw {
-      message: "Failed to fetch vans",
-      statusText: res.statusText,
-      status: res.status,
-    };
-  }
-  const data = await res.json();
-  return data.vans;
-}
-*/

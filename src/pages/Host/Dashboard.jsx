@@ -1,18 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { BsStarFill } from "react-icons/bs";
-import { getVans } from "../../utils/api";
+import { getHostVans } from "../../utils/api";
 
 export default function Dashboard() {
   const [vans, setVans] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
   React.useEffect(() => {
-    setLoading(true);
-    getVans()
-      .then((data) => setVans(data))
-      .catch((err) => setError(err))
-      .finally(() => setLoading(false));
+    async function loadData() {
+      setLoading(true);
+      try {
+        const vans = await getHostVans();
+
+        setVans(vans);
+      } catch (err) {
+        setError(`Error fetching vans: ${err}`);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
   }, []);
 
   function renderVanElements(vans) {

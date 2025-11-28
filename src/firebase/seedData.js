@@ -7,9 +7,8 @@ const serviceAccountKey = JSON.parse(
   fs.readFileSync("./serviceAccountKey.json", "utf8")
 );
 
-//import dataSeed from "./vansSeed.js";
-import dataSeed from "./usersSeed.js";
-const collectioName = "user"; //"vans"
+import dataSeed from "./vansSeed.js";
+const collectioName = "vans";
 
 // Initialize Firebase Admin
 const app = initializeApp({
