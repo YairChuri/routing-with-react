@@ -1,42 +1,36 @@
-// src/pages/Login.jsx
-import React, { useContext, useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { Navigate, useLocation, Link } from "react-router-dom";
-import { auth } from "../utils/api";
+import { useState, useEffect, useContext } from "react";
+import { createUser } from "../utils/api";
 import AuthContext from "../components/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
-  const { user } = useContext(AuthContext); // get user from AuthContext
-  const location = useLocation();
-
+export default function Signup() {
   const [loginFormData, setLoginFormData] = useState({
     email: "",
     password: "",
+    name: "",
   });
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
-
-  // If the user is already logged in, redirect automatically
-  if (user) {
-    const backNav = location.state?.path || "/host";
-    return <Navigate to={backNav} replace />;
-  }
-
+  const { user, userData, loading } = useContext(AuthContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!loading && user && userData) {
+      navigate("/host", { replace: true });
+    }
+  }, [user, userData, loading, navigate]);
   async function handleSubmit(e) {
     e.preventDefault();
-    setStatus("logging");
-    setError("");
 
     try {
-      await signInWithEmailAndPassword(
-        auth,
+      setStatus("signing");
+      setError("");
+      await createUser(
+        loginFormData.name,
         loginFormData.email,
         loginFormData.password
       );
-      // No manual navigate() needed!
-      // AuthContext will update and trigger the redirect above
     } catch (err) {
-      setError(err.message);
+      setError(err);
     } finally {
       setStatus("idle");
     }
@@ -46,16 +40,17 @@ export default function Login() {
     const { name, value } = e.target;
     setLoginFormData((prev) => ({ ...prev, [name]: value }));
   }
-
   return (
     <div className="login-container">
-      {location.state?.message ? (
-        <h1>{location.state.message}</h1>
-      ) : (
-        <h1>Sign in to your account</h1>
-      )}
-
+      <h1>Signup and rent your van!</h1>
       <form onSubmit={handleSubmit} className="login-form">
+        <input
+          name="name"
+          onChange={handleChange}
+          type="text"
+          placeholder="Full Name"
+          value={loginFormData.name}
+        />
         <input
           name="email"
           onChange={handleChange}
@@ -71,12 +66,9 @@ export default function Login() {
           value={loginFormData.password}
         />
 
-        <button disabled={status === "logging"}>
-          {status === "logging" ? "Logging in..." : "Log in"}
+        <button disabled={status === "signing"}>
+          {status === "signing" ? "Signing up..." : "Signup"}
         </button>
-        <Link className="signup-link" to="/signup">
-          Signup to host your van
-        </Link>
 
         {error && <p style={{ color: "#ff0000" }}>{error}</p>}
       </form>

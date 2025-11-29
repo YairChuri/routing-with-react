@@ -1,11 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import {
   getFirestore,
   collection,
   getDocs,
   doc,
   getDoc,
+  setDoc,
   query,
   where,
 } from "firebase/firestore";
@@ -42,8 +43,9 @@ export async function getVan(id) {
   };
   return van;
 }
-export async function getHostVans() {
-  const q = query(vansCollectionRef, where("hostId", "==", "123"));
+export async function getHostVans(hostId) {
+  console.log("host id: ", hostId);
+  const q = query(vansCollectionRef, where("hostId", "==", hostId));
   const snapshot = await getDocs(q);
   const vans = snapshot.docs.map((doc) => ({
     ...doc.data(),
@@ -51,10 +53,10 @@ export async function getHostVans() {
   }));
   return vans;
 }
-export async function getHostVan(id) {
+export async function getHostVan(id, hostId) {
   const q = query(
     vansCollectionRef,
-    where("hostId", "==", "123"),
+    where("hostId", "==", hostId),
     where("id", "==", id)
   );
   const snapshot = await getDocs(q);
@@ -64,6 +66,38 @@ export async function getHostVan(id) {
     ...snapshot.docs[0].data(),
     id: snapshot.docs[0].id,
   };
-  console.log(van);
   return van;
+}
+
+export async function createUser(
+  name,
+  email,
+  password,
+  id = "789",
+  role = "admin"
+) {
+  try {
+    // 1️⃣ Create the user in Firebase Auth
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    const uid = userCredential.user.uid;
+
+    // 2️⃣ Save additional info to Firestore
+    await setDoc(doc(db, "users", uid), {
+      name,
+      email,
+      role,
+      id,
+    });
+
+    // 3️⃣ At this point, user is automatically signed in
+    return userCredential.user;
+  } catch (err) {
+    console.error("Failed to create user", err);
+    throw err; // so your Signup component can show the error
+  }
 }

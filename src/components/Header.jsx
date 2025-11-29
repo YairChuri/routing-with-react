@@ -1,26 +1,23 @@
 import { Link, NavLink } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { useContext } from "react";
+import { signOut } from "firebase/auth";
 import { auth } from "../utils/api";
 import login from "../assets/login.svg";
 import logout from "../assets/logout.svg";
+import AuthContext from "./AuthContext";
 
 export default function Header() {
-  const [user, setUser] = useState(null);
+  const { user, userData } = useContext(AuthContext);
   const activeStyle = {
     fontWeight: "bold",
     textDecoration: "underline",
     color: "#161616",
   };
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return unsubscribe;
-  }, []);
 
   function handleLogout() {
-    signOut(auth).catch((err) => console.error("Logout failed", err));
+    signOut(auth)
+      .then(() => <navigate to={"/"} />)
+      .catch((err) => console.error("Logout failed", err));
   }
   return (
     <header className="header">
@@ -54,11 +51,16 @@ export default function Header() {
         </NavLink>
         <Link to="login" className="login-link">
           {user ? (
-            // we are loggedin
-            <img src={logout} onClick={handleLogout} className="login-icon" />
+            <div className="loggedin-user-info">
+              <p>Welcome, {userData?.name}</p>
+              <img src={logout} onClick={handleLogout} className="login-icon" />
+            </div>
           ) : (
-            // we are loggedout
-            <img src={login} className="login-icon" />
+            <div className="loggedin-user-info">
+              <p>Anonymous</p>
+
+              <img src={login} className="login-icon" />
+            </div>
           )}
         </Link>
       </nav>

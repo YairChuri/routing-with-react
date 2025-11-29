@@ -20,6 +20,7 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import AuthRequired from "./pages/AuthRequired";
 import { AuthProvider } from "./components/AuthContext";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route path="" element={<Home />} />
             <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
             <Route path="about" element={<About />} />
             <Route path="vans" element={<Vans />} />
             <Route path="vans/:id" element={<VanDetails />} />

@@ -1,18 +1,20 @@
 import { useParams, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Badge from "../../components/Badge";
 import HostVansLayout from "../../components/HostVansLayout";
 import { getHostVan } from "../../utils/api";
+import AuthContext from "../../components/AuthContext";
+
 export default function HostVanDetails() {
   const [van, setVan] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const params = useParams();
-
+  const { userData } = useContext(AuthContext);
   useEffect(() => {
     async function fetchVan() {
       try {
-        const van = await getHostVan(params.id);
+        const van = await getHostVan(params.id, userData.id);
         setVan(van);
       } catch (err) {
         setError(`Error fetching vans: ${err}`);

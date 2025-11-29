@@ -1,14 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { getHostVans } from "../../utils/api";
+import AuthContext from "../../components/AuthContext";
+
 export default function HostVans() {
   const [vans, setVans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { userData } = useContext(AuthContext);
   useEffect(() => {
     async function fetchVans() {
       try {
-        const vans = await getHostVans();
+        const vans = await getHostVans(userData.id);
 
         setVans(vans);
       } catch (err) {

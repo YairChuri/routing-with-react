@@ -1,17 +1,20 @@
-import React from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { BsStarFill } from "react-icons/bs";
 import { getHostVans } from "../../utils/api";
+import AuthContext from "../../components/AuthContext";
 
 export default function Dashboard() {
-  const [vans, setVans] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState(null);
-  React.useEffect(() => {
+  const [vans, setVans] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const { userData } = useContext(AuthContext);
+
+  useEffect(() => {
     async function loadData() {
       setLoading(true);
       try {
-        const vans = await getHostVans();
+        const vans = await getHostVans(userData.id);
 
         setVans(vans);
       } catch (err) {
